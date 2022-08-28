@@ -27,23 +27,83 @@ public class Node : MonoBehaviour
 
     private void Start()
     {
-        _button.onClick.AddListener(Learn);
+        _button.onClick.AddListener(OnClick);
     }
 
-    public bool IsNodeOpened()
+    public bool NodeOpenedChech()
     {
-        foreach(var previousNode in _previousNodes)
+        if (_previousNodes.Length == 0)
+            return true;
+
+        foreach (var previousNode in _previousNodes)
         {
-            if(!previousNode.IsLearned)
-                return false;
+            if(previousNode.IsLearned)
+                return true;
         }
 
-        return true;
+        return false;
+    }
+
+    public bool CanNodeBeUnlearned()
+    {
+        if (_previousNodes.Length == 0)
+            return false;
+
+        if (_nextNodes.Length == 0)
+            return true;
+
+        bool isAnyNextNodeLearned = false;
+        bool canReachBaseNode = false;
+
+        foreach (var nextNode in _nextNodes)
+        {
+            if (nextNode.IsLearned)
+            {
+                isAnyNextNodeLearned = true;
+                canReachBaseNode |= nextNode.CanReachBaseNode(this);
+            }
+        }
+
+        if (isAnyNextNodeLearned)
+            return canReachBaseNode;
+        else
+            return true;
+    }
+
+    public bool CanReachBaseNode(Node exclude = null)
+    {
+        if (_previousNodes.Length == 0)
+            return true;
+
+        foreach (var previousNode in _previousNodes)
+        {
+            if (previousNode == exclude)
+                continue;
+
+            if (previousNode.IsLearned)
+            {
+                return previousNode.CanReachBaseNode(exclude);
+            }
+        }
+
+        return false;
+    }
+
+    private void OnClick()
+    {
+        if(!IsLearned)
+        {
+            Learn();
+        }
+        else
+        {
+            Unleard();
+        }
     }
 
     public void Learn()
     {
-        if (IsNodeOpened())
+        if (NodeOpenedChech())
         {
             IsLearned = true;
             UpdateNodeUI();
@@ -52,22 +112,27 @@ public class Node : MonoBehaviour
 
     public void Unleard()
     {
+        if(CanNodeBeUnlearned())
         IsLearned = false;
+        UpdateNodeUI();
     }
 
     public void UpdateNodeUI()
     {
         var buttonImage = _button.image;
+        var isNeedGoDeeper = false;
 
         if (IsLearned)
         {
             buttonImage.color = _learnedSkillColor;
+            isNeedGoDeeper = true;
         }
         else
         {
-            if (IsNodeOpened())
+            if (NodeOpenedChech())
             {
                 buttonImage.color = _openedSkillColor;
+                isNeedGoDeeper = true;
             }
             else
             {
@@ -75,9 +140,12 @@ public class Node : MonoBehaviour
             }
         }
 
-        foreach(var nextNode in _nextNodes)
+        if (isNeedGoDeeper)
         {
-            nextNode.UpdateNodeUI();
+            foreach (var nextNode in _nextNodes)
+            {
+                nextNode.UpdateNodeUI();
+            }
         }
 
     }
