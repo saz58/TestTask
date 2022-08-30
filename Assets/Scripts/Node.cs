@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class Node : MonoBehaviour
 {
     public int Id; //{ get; private set; }
-    public bool IsOpen => !IsLearned; //&& _previousNode.IsOpened;
+    public bool IsOpen => NodeOpenedChech(); //&& _previousNode.IsOpened;
     public bool IsLearned; //{ get; private set; }
     public int Cost; //{ get; private set; }
 
