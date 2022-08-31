@@ -3,7 +3,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NodeView : MonoBehaviour
+public class NodeView : MonoBehaviour, INodeView
 {
     [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _lable;
@@ -24,7 +24,7 @@ public class NodeView : MonoBehaviour
         _buttonCallback = onClickCallback;
     }
 
-    public void SetCollor(Color color)
+    public void SetColor(Color color)
     {
         if (_buttonImage == null)
             return;
@@ -36,5 +36,4 @@ public class NodeView : MonoBehaviour
     {
         _buttonCallback?.Invoke(_sendValue);
     }
-    
 }
