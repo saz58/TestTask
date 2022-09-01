@@ -5,9 +5,16 @@ using UnityEngine;
 
 public class TreeView : MonoBehaviour
 {
+    [SerializeField] private TreeDataFile _treeDataFile;
     [SerializeField] private INodeView[] _nodeViews;
 
     private Tree _tree;
+
+    private void Start()
+    {
+        _treeDataFile.GenerateTreeFromData();
+    }
+
     private void Init(Tree tree)
     {
         var listOfNodeIds = tree.NodeIdToNode.Keys;
