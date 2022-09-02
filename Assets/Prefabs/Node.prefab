@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Button
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 0}
-  m_sharedMaterial: {fileID: 0}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -146,7 +146,7 @@ GameObject:
   - component: {fileID: 535877695840633455}
   - component: {fileID: 7479069395828359572}
   - component: {fileID: 2684456895719216175}
-  - component: {fileID: 6063032851420288944}
+  - component: {fileID: 7563631043789988991}
   m_Layer: 0
   m_Name: Node
   m_TagString: Untagged
@@ -256,7 +256,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &6063032851420288944
+--- !u!114 &7563631043789988991
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -265,16 +265,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 9217076970405105248}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 492b8961a9d3f7d40a83845d61aa7074, type: 3}
+  m_Script: {fileID: 11500000, guid: 7c7e1b67c7d77b84e89d0c456caaea11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Id: 0
-  IsLearned: 0
-  Cost: 0
-  NextNodeIds: 
-  _previousNodes: []
-  _nextNodes: []
   _button: {fileID: 2684456895719216175}
-  _openedSkillColor: {r: 1, g: 0.9267906, b: 0, a: 1}
-  _unopenedSkillColor: {r: 0.5849056, g: 0.5849056, b: 0.5849056, a: 1}
-  _learnedSkillColor: {r: 0, g: 1, b: 0.0450387, a: 1}
+  _lable: {fileID: 581030375231996500}

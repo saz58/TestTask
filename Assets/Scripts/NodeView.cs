@@ -5,10 +5,11 @@ using UnityEngine.UI;
 
 public class NodeView : MonoBehaviour, INodeView
 {
+    public int SendValue { get; private set; }
+
     [SerializeField] private Button _button;
     [SerializeField] private TMP_Text _lable;
 
-    private int _sendValue;
     private Image _buttonImage;
     private event Action<int> _buttonCallback;
 
@@ -20,7 +21,7 @@ public class NodeView : MonoBehaviour, INodeView
 
     public void Init(int sendValue, Action<int> onClickCallback) 
     {
-        _sendValue = sendValue;
+        SendValue = sendValue;
         _buttonCallback = onClickCallback;
     }
 
@@ -34,6 +35,6 @@ public class NodeView : MonoBehaviour, INodeView
 
     private void OnButtonClick()
     {
-        _buttonCallback?.Invoke(_sendValue);
+        _buttonCallback?.Invoke(SendValue);
     }
 }

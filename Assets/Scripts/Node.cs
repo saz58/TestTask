@@ -97,65 +97,17 @@ public class Node
         return false;
     }
 
-    private void OnClick()
-    {
-        if(!IsLearned)
-        {
-            Learn();
-        }
-        else
-        {
-            Unleard();
-        }
-    }
-
     public void Learn()
     {
         if (NodeOpenedChech())
         {
             IsLearned = true;
-            UpdateNodeUI();
         }
     }
 
     public void Unleard()
     {
         if(CanNodeBeUnlearned())
-        IsLearned = false;
-        UpdateNodeUI();
-    }
-
-    public void UpdateNodeUI()
-    {
-        /*
-        var buttonImage = _button.image;
-        var isNeedGoDeeper = false;
-
-        if (IsLearned)
-        {
-            buttonImage.color = _learnedSkillColor;
-            isNeedGoDeeper = true;
-        }
-        else
-        {
-            if (NodeOpenedChech())
-            {
-                buttonImage.color = _openedSkillColor;
-                isNeedGoDeeper = true;
-            }
-            else
-            {
-                buttonImage.color = _unopenedSkillColor;
-            }
-        }
-
-        if (isNeedGoDeeper)
-        {
-            foreach (var nextNode in _nextNodes)
-            {
-                nextNode.UpdateNodeUI();
-            }
-        }
-        */
+            IsLearned = false;
     }
 }

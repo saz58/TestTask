@@ -26,10 +26,10 @@ public class TreeDataFile : ScriptableObject
 {
     [SerializeField] private NodeData[] NodeData;
 
-    public Tree GenerateTreeFromData()
+    public Tree GenerateTreeFromData() // Its better to do as extention method to separate data from logic, but im in hurry
     {
         Node baseNode = null;
-        int currentId = 1;
+        int currentId = 0;
 
         var nodeDictionary = new Dictionary<int, Node>();
 
@@ -40,10 +40,12 @@ public class TreeDataFile : ScriptableObject
 
             if (baseNode == null)
                 baseNode = node;
+            
+            currentId++;
         }
 
         //Generate connections
-        currentId = 1;
+        currentId = 0;
 
         foreach (var nodeData in NodeData)
         {
@@ -64,6 +66,8 @@ public class TreeDataFile : ScriptableObject
 
             currentNode.SetPreviousNodes(previousNodes);
             currentNode.SetNextNodes(nextNodes);
+            
+            currentId++;
         }
 
         Tree tree = new Tree(baseNode);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 //using System.Linq;
 using UnityEngine;
 
-public class Tree
+public class Tree: ITree
 {
     private Node _baseNode;
 
@@ -12,9 +12,21 @@ public class Tree
     public Tree(Node baseNode)
     {
         _baseNode = baseNode;
+        GenerateNodesDictionary();
     }
 
-    public void GenerateNodesDictionary()
+    public Node GetNodeById(int id)
+    {
+        if(NodeIdToNode.TryGetValue(id, out Node value))
+        {
+            return value;
+        }
+
+        Debug.LogError($"[Tree] There is no Node with id {id}");
+        return null;
+    }
+
+    private void GenerateNodesDictionary()
     {
         NodeIdToNode = new Dictionary<int, Node>();
         NodeIdToNode.Add(_baseNode.Id, _baseNode);
