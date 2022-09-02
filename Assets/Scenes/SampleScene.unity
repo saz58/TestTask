@@ -534,17 +534,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _nodeViews:
-  - {fileID: 1248521545}
-  - {fileID: 109054430}
-  - {fileID: 1077860527}
-  - {fileID: 586138284}
-  - {fileID: 1344559360}
-  - {fileID: 307205723}
-  - {fileID: 443161043}
-  - {fileID: 1787302947}
-  - {fileID: 385188427}
-  - {fileID: 1377577346}
-  - {fileID: 1729902808}
+  - _id: 0
+    _nodeView: {fileID: 1248521545}
+  - _id: 1
+    _nodeView: {fileID: 109054430}
+  - _id: 2
+    _nodeView: {fileID: 1077860527}
+  - _id: 3
+    _nodeView: {fileID: 586138284}
+  - _id: 4
+    _nodeView: {fileID: 1344559360}
+  - _id: 5
+    _nodeView: {fileID: 307205723}
+  - _id: 6
+    _nodeView: {fileID: 443161043}
+  - _id: 7
+    _nodeView: {fileID: 1787302947}
+  - _id: 8
+    _nodeView: {fileID: 385188427}
+  - _id: 9
+    _nodeView: {fileID: 1377577346}
+  - _id: 10
+    _nodeView: {fileID: 1729902808}
   _openedSkillColor: {r: 1, g: 0.9424448, b: 0, a: 1}
   _unopenedSkillColor: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
   _learnedSkillColor: {r: 0.07041264, g: 0.8773585, b: 0, a: 1}
