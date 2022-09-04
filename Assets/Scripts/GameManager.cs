@@ -24,4 +24,15 @@ public class GameManager : MonoBehaviour
         _skillPoints += value;
     }
 
+    private bool SpendSkillPoints(int value)
+    {
+        if(_skillPoints < value)
+        {
+            return false;
+        }
+
+        _skillPoints -= value;
+        return true;
+    }
+
 }
