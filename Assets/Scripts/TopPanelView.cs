@@ -1,13 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 using System;
 
 public class TopPanelView : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _skillPointsLable;
+    [SerializeField] private string _skillPointsLabelMask = "Skill points: {0}";
+    [SerializeField] private Text _skillPointsLabel;
     [SerializeField] private Button _earnSkillPoint;
     [SerializeField] private Button _learnSkill;
     [SerializeField] private Button _unlearnSkill;
@@ -26,6 +24,12 @@ public class TopPanelView : MonoBehaviour
         _unlearnAllSkills.onClick.AddListener(OnUnlearnAllButtonClick);
     }
 
+    public void UpdateButtonsState(bool isLearnButtonInteractable, bool isUnlearnButtonInteractable)
+    {
+        _learnSkill.interactable = isLearnButtonInteractable;
+        _unlearnSkill.interactable = isUnlearnButtonInteractable;
+    }    
+
     private void OnEarnButtonClick()
     {
         EarnButtonClickEvent?.Invoke();
@@ -43,13 +47,12 @@ public class TopPanelView : MonoBehaviour
 
     private void OnUnlearnAllButtonClick()
     {
-        EarnButtonClickEvent?.Invoke();
+        UnlearnAllButtonClickEvent?.Invoke();
     }
 
-    // Update is called once per frame
     public void UpdateSkillPoints(int skillPointsCount)
     {
-        _skillPointsLable.text = skillPointsCount.ToString();
+        _skillPointsLabel.text = string.Format(_skillPointsLabelMask, skillPointsCount);
     }
 
     private void OnDestroy()

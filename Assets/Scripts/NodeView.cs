@@ -1,14 +1,14 @@
-using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NodeView : MonoBehaviour, INodeView
+public class NodeView : MonoBehaviour, INodeView, ISelectableView
 {
     public int SendValue { get; private set; }
 
     [SerializeField] private Button _button;
-    [SerializeField] private TMP_Text _lable;
+    [SerializeField] private Text _label; // its better be TMP, i know
+    [SerializeField] private GameObject _selectedMarker;
 
     private Image _buttonImage;
     private event Action<int> _buttonCallback;
@@ -36,5 +36,15 @@ public class NodeView : MonoBehaviour, INodeView
     private void OnButtonClick()
     {
         _buttonCallback?.Invoke(SendValue);
+    }
+
+    public void SetSelect(bool isSelected)
+    {
+        _selectedMarker.SetActive(isSelected);
+    }
+
+    public void SetText(string text)
+    {
+        _label.text = text;
     }
 }

@@ -26,16 +26,16 @@ public class TreeDataFile : ScriptableObject
 {
     [SerializeField] private NodeData[] NodeData;
 
-    public Tree GenerateTreeFromData() // Its better to do as extention method to separate data from logic, but im in hurry
+    public Tree<NodeWithText> GenerateTreeFromData() // Its better to do as extention method to separate data from logic, but im in hurry
     {
-        Node baseNode = null;
+        NodeWithText baseNode = null;
         int currentId = 0;
 
-        var nodeDictionary = new Dictionary<int, Node>();
+        var nodeDictionary = new Dictionary<int, NodeWithText>();
 
         foreach(var nodeData in NodeData)
         {
-            var node = new Node(currentId, nodeData.IsLearned, nodeData.Cost);
+            var node = new NodeWithText(currentId, nodeData.IsLearned, nodeData.Cost, nodeData.LableText);
             nodeDictionary.Add(node.Id, node);
 
             if (baseNode == null)
@@ -50,7 +50,7 @@ public class TreeDataFile : ScriptableObject
         foreach (var nodeData in NodeData)
         {
             var currentNode = nodeDictionary[currentId];
-            Node[] previousNodes = new Node[nodeData.PreviousNodeIds.Length];
+            NodeWithText[] previousNodes = new NodeWithText[nodeData.PreviousNodeIds.Length];
 
             for(int i = 0; i < nodeData.PreviousNodeIds.Length; i++)
             {
@@ -70,7 +70,7 @@ public class TreeDataFile : ScriptableObject
             currentId++;
         }
 
-        Tree tree = new Tree(baseNode);
+        Tree<NodeWithText> tree = new Tree<NodeWithText>(baseNode);
         return tree;
     }
 }

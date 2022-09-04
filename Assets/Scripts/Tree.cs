@@ -3,21 +3,21 @@ using System.Collections.Generic;
 //using System.Linq;
 using UnityEngine;
 
-public class Tree: ITree
+public class Tree<T>: ITree<T> where T : Node
 {
-    private Node _baseNode;
+    private T _baseNode;
 
-    public Dictionary<int, Node> NodeIdToNode { get; private set; }
+    public Dictionary<int, T> NodeIdToNode { get; private set; }
 
-    public Tree(Node baseNode)
+    public Tree(T baseNode)
     {
         _baseNode = baseNode;
         GenerateNodesDictionary();
     }
 
-    public Node GetNodeById(int id)
+    public T GetNodeById(int id)
     {
-        if(NodeIdToNode.TryGetValue(id, out Node value))
+        if(NodeIdToNode.TryGetValue(id, out T value))
         {
             return value;
         }
@@ -28,10 +28,10 @@ public class Tree: ITree
 
     private void GenerateNodesDictionary()
     {
-        NodeIdToNode = new Dictionary<int, Node>();
+        NodeIdToNode = new Dictionary<int, T>();
         NodeIdToNode.Add(_baseNode.Id, _baseNode);
 
-        Queue<Node> nodesToCheck = new Queue<Node>();
+        Queue<T> nodesToCheck = new Queue<T>();
         nodesToCheck.Enqueue(_baseNode);
 
         while(nodesToCheck.Count > 0)
@@ -42,8 +42,8 @@ public class Tree: ITree
             {
                 if(!NodeIdToNode.ContainsKey(nextNode.Id))
                 {
-                    NodeIdToNode.Add(nextNode.Id, nextNode);
-                    nodesToCheck.Enqueue(nextNode);
+                    NodeIdToNode.Add(nextNode.Id, nextNode as T);
+                    nodesToCheck.Enqueue(nextNode as T);
                 }
             }
         }

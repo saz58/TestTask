@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-public interface ITree
+public interface ITree<T> where T: Node
 {
-    Dictionary<int, Node> NodeIdToNode { get; }
-    Node GetNodeById(int id);
+    Dictionary<int, T> NodeIdToNode { get; }
+    T GetNodeById(int id);
 }
 

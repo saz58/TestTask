@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [Serializable]
@@ -15,57 +16,83 @@ public class IdToNodeView
 
 public class TreeView : MonoBehaviour
 {
+    public int SelectedId { get; private set; }
+    public event Action ChangeSelectedNode;
+
+    [SerializeField] private string _nodeTextMask = "{0}\nCost {1}";
     [SerializeField] private IdToNodeView[] _nodeViews;
     [SerializeField] private Color _openedSkillColor;
     [SerializeField] private Color _unopenedSkillColor;
     [SerializeField] private Color _learnedSkillColor;
     
-    private ITree _tree;
+    private ITree<NodeWithText> _tree;
+    private ISelectableView _currentSelected;
+    private Dictionary<int, NodeView> _idToNodeViewDictionary;
 
-    public void Init(ITree tree)
+    public void Init(ITree<NodeWithText> tree) // looks horrible, i know
     {
         _tree = tree;
 
         var listOfNodeIds = tree.NodeIdToNode.Keys;
 
-        foreach(var id in tree.NodeIdToNode.Keys)
+        if(_idToNodeViewDictionary == null)
         {
-            var nodeTulpe = _nodeViews.FirstOrDefault(x=> x.Id == id);
+            InitNodeViewDictionary();
+        }
 
-            if (nodeTulpe == default)
+        foreach(var id in tree.NodeIdToNode.Keys)
+        {   
+            if (_idToNodeViewDictionary.TryGetValue(id, out NodeView value))
+            {
+                var currentNode = tree.NodeIdToNode[id];
+                value.Init(id, OnNodeClick);
+                value.SetText(string.Format(_nodeTextMask, currentNode.Text, currentNode.Cost));
+            }
+            else
             {
                 Debug.LogError($"[TreeView] Not enought INodeViews for this tree.\ntree.NodeIdToNode.Keys.Count = {tree.NodeIdToNode.Keys.Count}; _nodeViews.Length = {_nodeViews.Length}");
                 continue;
             }
 
-            nodeTulpe.NodeView.Init(id, OnNodeClick); 
+            
         }
 
         OnNodeClick(0);
     }
 
-    private void OnNodeClick(int nodeId) // ToDo: move this functional to Tree class
+    private void InitNodeViewDictionary()
     {
-        if (_tree.NodeIdToNode.TryGetValue(nodeId, out Node node))
-        {
-            if(!node.IsLearned)
-            {
-                node.Learn();
-            }
-            else
-            {
-                node.Unleard();
-            }
+        _idToNodeViewDictionary = new Dictionary<int, NodeView>(_nodeViews.Length);
 
-            UpdateState(node);
-        }
-        else
+        foreach(var nodeViewKeyValue in _nodeViews)
         {
-            Debug.LogError($"[TreeView] There is no node in dictionary with id = {nodeId}");
+            _idToNodeViewDictionary[nodeViewKeyValue.Id] = nodeViewKeyValue.NodeView;
         }
     }
 
-    private void UpdateState(Node node)
+    private void OnNodeClick(int nodeId) // ToDo: move this functional to Tree class
+    {
+        if(_idToNodeViewDictionary.TryGetValue(nodeId, out NodeView value))
+        {
+            if (_currentSelected != null)
+            {
+                _currentSelected.SetSelect(false);
+            }
+
+            _currentSelected = value;
+            _currentSelected.SetSelect(true);
+            SelectedId = nodeId;
+
+            ChangeSelectedNode?.Invoke();
+        }
+        else
+        {
+            Debug.LogError($"[TreeView] There is no node view in dictionary with id = {nodeId}");
+            return;
+        }
+    }
+
+    public void UpdateState(Node node, bool forseDeepUpdate = false)
     {
         Queue<Node> nodesToUpdate = new Queue<Node>();
         nodesToUpdate.Enqueue(node);
@@ -83,7 +110,7 @@ public class TreeView : MonoBehaviour
             }
             else
             {
-                if (nodeToUpdate.NodeOpenedChech())
+                if (NodeHandler.CanNodeBeLearned(nodeToUpdate))
                 {
                     nodeView.SetColor(_openedSkillColor);
                     isNeedGoDeeper = true;
@@ -94,7 +121,7 @@ public class TreeView : MonoBehaviour
                 }
             }
 
-            if (isNeedGoDeeper)
+            if (isNeedGoDeeper || forseDeepUpdate)
             {
                 foreach (var nextNode in nodeToUpdate.NextNodes)
                 {
